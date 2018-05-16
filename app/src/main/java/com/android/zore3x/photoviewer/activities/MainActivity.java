@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.android.zore3x.photoviewer.App;
 import com.android.zore3x.photoviewer.R;
 import com.android.zore3x.photoviewer.adapters.PhotosLineAdapter;
 import com.android.zore3x.photoviewer.api.Order;
@@ -15,7 +16,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String CLIENT_ID = "e83deeb4b720fde9e40ae1cb8ea68b9d5cb8357b5415cdfd567881b234c9bbbc";
 
     private RecyclerView mPhotoLineRecyclerView;
     private PhotosLineAdapter mPhotosLineAdapter;
@@ -28,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
         mPhotoLineRecyclerView = findViewById(R.id.photosLine_recyclerVeiw);
         mPhotoLineRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        Unsplash unsplash = new Unsplash(CLIENT_ID);
-        unsplash.getPhotos(1, null, null, new Unsplash.OnPhotosLoadedListener() {
+
+
+        App.getUnsplash().getPhotos(1, null, null, new Unsplash.OnPhotosLoadedListener() {
             @Override
             public void onComplete(List<Photo> photos) {
                 updateUi(photos);
