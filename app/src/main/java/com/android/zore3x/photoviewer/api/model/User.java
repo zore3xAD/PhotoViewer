@@ -2,7 +2,7 @@ package com.android.zore3x.photoviewer.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class User {
+public class User {
 
     @SerializedName("id")
     private String mId;
@@ -24,11 +24,13 @@ class User {
     private int mTotalCollections;
     @SerializedName("links")
     private Links mLinks;
+    @SerializedName("profile_image")
+    private ProfileImage mProfileImage;
 
     public User() {
     }
 
-    public User(String id, String updatedAt, String username, String name, String portfolioUrl, String bio, String location, int totalLikes, int totalCollections, Links links) {
+    public User(String id, String updatedAt, String username, String name, String portfolioUrl, String bio, String location, int totalLikes, int totalCollections, Links links, ProfileImage profileImage) {
         mId = id;
         mUpdatedAt = updatedAt;
         mUsername = username;
@@ -39,6 +41,7 @@ class User {
         mTotalLikes = totalLikes;
         mTotalCollections = totalCollections;
         mLinks = links;
+        mProfileImage = profileImage;
     }
 
     public String getId() {
@@ -119,5 +122,13 @@ class User {
 
     public void setLinks(Links links) {
         mLinks = links;
+    }
+
+    public ProfileImage getProfileImage() {
+        return mProfileImage;
+    }
+
+    public void setProfileImage(ProfileImage profileImage) {
+        mProfileImage = profileImage;
     }
 }

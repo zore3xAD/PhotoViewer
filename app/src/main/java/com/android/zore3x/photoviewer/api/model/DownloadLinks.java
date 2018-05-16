@@ -1,6 +1,6 @@
 package com.android.zore3x.photoviewer.api.model;
 
-class DownloadLinks {
+public class DownloadLinks {
 
     private String mSelf;
     private String mHtml;

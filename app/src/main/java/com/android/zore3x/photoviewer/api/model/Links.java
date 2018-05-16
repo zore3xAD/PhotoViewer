@@ -2,7 +2,7 @@ package com.android.zore3x.photoviewer.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class Links {
+public class Links {
 
     @SerializedName("self")
     private String mSelf;

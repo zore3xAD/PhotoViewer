@@ -2,7 +2,7 @@ package com.android.zore3x.photoviewer.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class Urls {
+public class Urls {
 
     @SerializedName("raw")
     private String mRaw;
