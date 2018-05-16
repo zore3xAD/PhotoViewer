@@ -1,5 +1,7 @@
 package com.android.zore3x.photoviewer.api.endpoints;
 
+import android.support.annotation.Nullable;
+
 import com.android.zore3x.photoviewer.api.model.Photo;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import retrofit2.http.Query;
 public interface PhotosEndpoints {
 
     @GET("/photos")
-    Call<List<Photo>> getPhotos(@Query("page") int page, @Query("per_page") int perPage,
-                                @Query("order_by") String orderBy);
+    Call<List<Photo>> getPhotos(@Query("page") Integer page, @Query("per_page") @Nullable Integer perPage,
+                                @Query("order_by") @Nullable String orderBy);
 
 }
