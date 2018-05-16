@@ -1,8 +1,10 @@
 package com.android.zore3x.photoviewer.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -11,44 +13,23 @@ import com.android.zore3x.photoviewer.R;
 import com.android.zore3x.photoviewer.adapters.PhotosLineAdapter;
 import com.android.zore3x.photoviewer.api.Unsplash;
 import com.android.zore3x.photoviewer.api.model.Photo;
+import com.android.zore3x.photoviewer.fragments.AllPhotosFragment;
 
 import java.util.List;
 
-public class AllPhotosActivity extends AppCompatActivity{
+public class AllPhotosActivity extends SingleFragmentActivity{
 
-    private RecyclerView mPhotoLineRecyclerView;
-    private PhotosLineAdapter mPhotosLineAdapter;
+
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_photos);
-
-        mPhotoLineRecyclerView = findViewById(R.id.photosLine_recyclerVeiw);
-        mPhotoLineRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        App.getUnsplash().getPhotos(1, null, null, new Unsplash.OnPhotosLoadedListener() {
-            @Override
-            public void onComplete(List<Photo> photos) {
-                updateUi(photos);
-            }
-
-            @Override
-            public void onError(String error) {
-                int d = 3;
-            }
-        });
+    protected Fragment createFragment() {
+        return AllPhotosFragment.newInstance();
     }
 
-    private void updateUi(List<Photo> photos) {
+    public static Intent newIntent(Context packageContext) {
+        Intent intent = new Intent(packageContext, AllPhotosActivity.class);
 
-        if(mPhotosLineAdapter != null) {
-            mPhotosLineAdapter.setPhotoList(photos);
-            mPhotosLineAdapter.notifyDataSetChanged();
-        } else {
-            mPhotosLineAdapter = new PhotosLineAdapter(photos);
-            mPhotoLineRecyclerView.setAdapter(mPhotosLineAdapter);
-        }
-
+        return intent;
     }
+
 }

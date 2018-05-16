@@ -31,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
         mAllPhotosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AllPhotosActivity.class);
-                startActivity(intent);
+                startActivity(AllPhotosActivity.newIntent(getApplicationContext()));
             }
         });
 
