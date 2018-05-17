@@ -2,6 +2,7 @@ package com.android.zore3x.photoviewer.api.endpoints;
 
 import android.support.annotation.Nullable;
 
+import com.android.zore3x.photoviewer.api.model.Download;
 import com.android.zore3x.photoviewer.api.model.Photo;
 
 import java.util.List;
@@ -19,5 +20,8 @@ public interface PhotosEndpoints {
 
     @GET("/photos/{id}")
     Call<Photo> getPhoto(@Path("id") String id, @Query("w") Integer w, @Query("h") Integer h);
+
+    @GET("/photos/{id}/download")
+    Call<Download> getDownloadLink(@Path("id") String id);
 
 }
