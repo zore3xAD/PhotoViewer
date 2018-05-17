@@ -6,6 +6,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.android.zore3x.photoviewer.App;
@@ -22,6 +24,7 @@ public class FullPhotoPreviewDialog extends DialogFragment {
     private Photo mPhoto;
 
     private ImageView mFullPhotoImageView;
+    private ImageButton mDownloadButton;
 
     public static FullPhotoPreviewDialog newInstance(String photoId) {
 
@@ -43,6 +46,7 @@ public class FullPhotoPreviewDialog extends DialogFragment {
         mPhotoId = getArguments().getString(ARG_PHOTO_ID);
 
         mFullPhotoImageView = view.findViewById(R.id.fullPhotoPreview_imageView);
+        mDownloadButton = view.findViewById(R.id.downloadPhoto_button);
 
         return view;
     }
@@ -56,12 +60,23 @@ public class FullPhotoPreviewDialog extends DialogFragment {
             public void onComplete(Photo photo) {
                 mPhoto = photo;
                 // загрузка картинки
-                Picasso.get().load(mPhoto.getUrls().getThumb()).into(mFullPhotoImageView);
+                Picasso.get().load(mPhoto.getUrls().getRegular()).into(mFullPhotoImageView);
             }
 
             @Override
             public void onError(String error) {
                 int d ;
+            }
+        });
+
+        mFullPhotoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mDownloadButton.getVisibility() == View.GONE) {
+                    mDownloadButton.setVisibility(View.VISIBLE);
+                } else {
+                    mDownloadButton.setVisibility(View.GONE);
+                }
             }
         });
     }
