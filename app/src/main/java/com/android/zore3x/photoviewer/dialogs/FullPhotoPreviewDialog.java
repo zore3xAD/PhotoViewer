@@ -8,13 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.android.zore3x.photoviewer.App;
 import com.android.zore3x.photoviewer.R;
+import com.android.zore3x.photoviewer.api.Unsplash;
+import com.android.zore3x.photoviewer.api.model.Photo;
 import com.squareup.picasso.Picasso;
 
 public class FullPhotoPreviewDialog extends DialogFragment {
 
     public static final String ARG_PHOTO_ID = "photoId";
     private String mPhotoId;
+
+    private Photo mPhoto;
 
     private ImageView mFullPhotoImageView;
 
@@ -37,8 +42,27 @@ public class FullPhotoPreviewDialog extends DialogFragment {
 
         mPhotoId = getArguments().getString(ARG_PHOTO_ID);
 
-//        mFullPhotoImageView = view.findViewById(R.id.fullPhotoPreview_imageView);
+        mFullPhotoImageView = view.findViewById(R.id.fullPhotoPreview_imageView);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        App.getUnsplash().getPhoto(mPhotoId, new Unsplash.OnPhotoLoadedListener() {
+            @Override
+            public void onComplete(Photo photo) {
+                mPhoto = photo;
+                // загрузка картинки
+                Picasso.get().load(mPhoto.getUrls().getThumb()).into(mFullPhotoImageView);
+            }
+
+            @Override
+            public void onError(String error) {
+                int d ;
+            }
+        });
     }
 }

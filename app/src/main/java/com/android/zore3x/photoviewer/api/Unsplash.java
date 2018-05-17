@@ -1,5 +1,8 @@
 package com.android.zore3x.photoviewer.api;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.android.zore3x.photoviewer.api.endpoints.PhotosEndpoints;
 import com.android.zore3x.photoviewer.api.model.Photo;
 
@@ -18,6 +21,11 @@ public class Unsplash {
 
     public interface OnPhotosLoadedListener {
         void onComplete(List<Photo> photos);
+
+        void onError(String error);
+    }
+    public interface OnPhotoLoadedListener {
+        void onComplete(Photo photo);
 
         void onError(String error);
     }
@@ -45,7 +53,7 @@ public class Unsplash {
         mPhotosApiService = retrofit.create(PhotosEndpoints.class);
     }
 
-    // Функция вызываемая из вне
+    // Функция вызываемая для получения всех фото
     public void getPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
         Call<List<Photo>> call;
         if(order == null) {
@@ -54,6 +62,16 @@ public class Unsplash {
             call = mPhotosApiService.getPhotos(page, perPage, order.getOrder());
         }
         call.enqueue(getMultiplePhotoCallback(listener));
+    }
+
+    // функция для получения определенного фото
+    public void getPhoto(@NonNull String id, final OnPhotoLoadedListener listener) {
+        getPhoto(id, null, null, listener);
+    }
+
+    private void getPhoto(@NonNull String id, @Nullable Integer weight, @Nullable Integer height, final OnPhotoLoadedListener listener) {
+        Call<Photo> call = mPhotosApiService.getPhoto(id, weight, height);
+        call.enqueue(getSinglePhotoCallback(listener));
     }
 
     // Callbacks
@@ -80,4 +98,22 @@ public class Unsplash {
             }
         };
     }
+
+    private Callback<Photo> getSinglePhotoCallback(final OnPhotoLoadedListener listener) {
+        return new Callback<Photo>() {
+            @Override
+            public void onResponse(Call<Photo> call, Response<Photo> response) {
+                int statusCode = response.code();
+                if(statusCode == 200) {
+                    listener.onComplete(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Photo> call, Throwable t) {
+                listener.onError(t.getMessage());
+            }
+        };
+    }
+
 }
