@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.android.zore3x.photoviewer.api.endpoints.PhotosEndpoints;
+import com.android.zore3x.photoviewer.api.endpoints.UsersEndpoints;
 import com.android.zore3x.photoviewer.api.model.Download;
 import com.android.zore3x.photoviewer.api.model.Photo;
+import com.android.zore3x.photoviewer.api.model.User;
 
 import java.util.List;
 
@@ -34,6 +36,10 @@ public class Unsplash {
         void onComplete(Download downloadLink);
         void onError(String error);
     }
+    public interface  OnUserLoadedListener {
+        void onComplete(User user);
+        void onError(String error);
+    }
 
 
 
@@ -42,6 +48,7 @@ public class Unsplash {
     private String mClientId;
 
     private PhotosEndpoints mPhotosApiService;
+    private UsersEndpoints mUsersEndpoints;
 
     public Unsplash(String clientId) {
         mClientId = clientId;
@@ -56,6 +63,7 @@ public class Unsplash {
                 .build();
 
         mPhotosApiService = retrofit.create(PhotosEndpoints.class);
+        mUsersEndpoints = retrofit.create(UsersEndpoints.class);
     }
 
     // Функция вызываемая для получения всех фото
@@ -79,12 +87,34 @@ public class Unsplash {
         call.enqueue(getPhotoDownloadLink(listener));
     }
 
+    public void getUser(@NonNull String username, final OnUserLoadedListener listener) {
+        Call<User> call = mUsersEndpoints.getUser(username);
+        call.enqueue(getUser(listener));
+    }
+
     private void getPhoto(@NonNull String id, @Nullable Integer weight, @Nullable Integer height, final OnPhotoLoadedListener listener) {
         Call<Photo> call = mPhotosApiService.getPhoto(id, weight, height);
         call.enqueue(getSinglePhotoCallback(listener));
     }
 
+
     // Callbacks
+
+    private Callback<User> getUser(final OnUserLoadedListener listener) {
+        return new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.code() == 200) {
+                    listener.onComplete(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                listener.onError(t.getMessage());
+            }
+        };
+    }
 
     private Callback<Download> getPhotoDownloadLink(final OnLinkDownloadListener listener) {
         return new Callback<Download>() {
