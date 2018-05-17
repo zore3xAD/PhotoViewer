@@ -66,6 +66,16 @@ public class Unsplash {
         mUsersEndpoints = retrofit.create(UsersEndpoints.class);
     }
 
+    public void getUserPhotos(String username, Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener) {
+        Call<List<Photo>> call;
+        if(order == null) {
+            call = mUsersEndpoints.getUserPhotos(username, page, perPage, null);
+        } else {
+            call = mUsersEndpoints.getUserPhotos(username, page, perPage, order.getOrder());
+        }
+        call.enqueue(getMultiplePhotoCallback(listener));
+    }
+
     // Функция вызываемая для получения всех фото
     public void getPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
         Call<List<Photo>> call;
