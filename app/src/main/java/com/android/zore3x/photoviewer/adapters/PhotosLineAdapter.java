@@ -23,7 +23,7 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
 
     @Override
     public PhotoLineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_photo, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_photo_item, parent, false);
 
         return new PhotoLineViewHolder(view);
     }

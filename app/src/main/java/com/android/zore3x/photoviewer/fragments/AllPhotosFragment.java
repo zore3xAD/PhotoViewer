@@ -1,5 +1,6 @@
 package com.android.zore3x.photoviewer.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ public class AllPhotosFragment extends Fragment {
 
     private RecyclerView mPhotoLineRecyclerView;
     private PhotosLineAdapter mPhotosLineAdapter;
+
+    private Integer mPage = 1;
 
     public static AllPhotosFragment newInstance() {
         
@@ -47,7 +50,7 @@ public class AllPhotosFragment extends Fragment {
         mPhotoLineRecyclerView = view.findViewById(R.id.photosLine_recyclerVeiw);
         mPhotoLineRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        App.getUnsplash().getPhotos(1, null, null, new Unsplash.OnPhotosLoadedListener() {
+        App.getUnsplash().getPhotos(mPage, null, null, new Unsplash.OnPhotosLoadedListener() {
             @Override
             public void onComplete(List<Photo> photos) {
                 updateUi(photos);
