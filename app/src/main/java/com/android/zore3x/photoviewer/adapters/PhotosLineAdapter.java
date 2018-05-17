@@ -111,7 +111,7 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
 
                     break;
                 case R.id.userBlock_constraintLayout:
-                    Intent intent = UserInformationActivity.newIntent(mContext, mCurrentPhoto.getId());
+                    Intent intent = UserInformationActivity.newIntent(mContext, mCurrentPhoto.getUser().getUsername());
                     mContext.startActivity(intent);
                     break;
             }
