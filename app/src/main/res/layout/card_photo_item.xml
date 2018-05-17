@@ -12,37 +12,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/photoRadius_cardView"
-            android:layout_width="@dimen/userPhoto_small"
-            android:layout_height="@dimen/userPhoto_small"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/userBlock_constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/card_userPhotoSmall_imageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="User photo"
-                android:scaleType="centerCrop"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/user_placeholder"/>
-        </android.support.v7.widget.CardView>
+            <TextView
+                android:id="@+id/card_username_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/photoRadius_cardView"
+                app:layout_constraintStart_toEndOf="@+id/photoRadius_cardView"
+                app:layout_constraintTop_toTopOf="@+id/photoRadius_cardView"
+                tools:text="Username"/>
 
-        <TextView
-            android:id="@+id/card_username_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/photoRadius_cardView"
-            app:layout_constraintStart_toEndOf="@+id/photoRadius_cardView"
-            app:layout_constraintTop_toTopOf="@+id/photoRadius_cardView"
-            tools:text="Username"/>
+            <android.support.v7.widget.CardView
+                android:id="@+id/photoRadius_cardView"
+                android:layout_width="@dimen/userPhoto_small"
+                android:layout_height="@dimen/userPhoto_small"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/card_userPhotoSmall_imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="User photo"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/user_placeholder"/>
+            </android.support.v7.widget.CardView>
+        </android.support.constraint.ConstraintLayout>
 
         <ImageView
             android:id="@+id/card_photo_imageView"
@@ -50,12 +64,11 @@
             android:layout_height="150dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:cropToPadding="true"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/photoRadius_cardView"
+            app:layout_constraintTop_toBottomOf="@+id/userBlock_constraintLayout"
             app:srcCompat="@drawable/placeholder_photo"/>
 
         <TextView
