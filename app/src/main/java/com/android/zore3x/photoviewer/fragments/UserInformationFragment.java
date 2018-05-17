@@ -3,16 +3,24 @@ package com.android.zore3x.photoviewer.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.android.zore3x.photoviewer.App;
 import com.android.zore3x.photoviewer.R;
+import com.android.zore3x.photoviewer.adapters.UsersPhotoAdapter;
+import com.android.zore3x.photoviewer.api.Order;
 import com.android.zore3x.photoviewer.api.Unsplash;
+import com.android.zore3x.photoviewer.api.model.Photo;
 import com.android.zore3x.photoviewer.api.model.User;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,7 +38,12 @@ public class UserInformationFragment extends Fragment {
     private TextView mUserCollectionsTextView;
     private TextView mUserBioTextView;
 
+    private RecyclerView mUserPhotosRecyclerView;
+
     private User mUser;
+    private List<Photo> mUserPhotoList;
+
+    private UsersPhotoAdapter mAdapter;
 
     public static UserInformationFragment newInstance(String username) {
 
@@ -58,12 +71,16 @@ public class UserInformationFragment extends Fragment {
         mUserCollectionsTextView = view.findViewById(R.id.userCollectionsCount_textView);
         mUserBioTextView = view.findViewById(R.id.userBio_textView);
 
+        mUserPhotosRecyclerView = view.findViewById(R.id.userPhotos_recyclerView);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mUserPhotosRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         App.getUnsplash().getUser(mUsername, new Unsplash.OnUserLoadedListener() {
             @Override
@@ -77,6 +94,19 @@ public class UserInformationFragment extends Fragment {
                 int d = 4;
             }
         });
+
+        App.getUnsplash().getUserPhotos(mUsername, 1, null, Order.LATEST, new Unsplash.OnPhotosLoadedListener() {
+            @Override
+            public void onComplete(List<Photo> photos) {
+                mUserPhotoList = photos;
+                updateUI(mUserPhotoList);
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     private void updateUI(User user) {
@@ -88,5 +118,15 @@ public class UserInformationFragment extends Fragment {
         mUserLikesTextView.setText(String.format(getString(R.string.user_total_likes), user.getTotalLikes()));
         mUserCollectionsTextView.setText(String.format(getString(R.string.user_total_collections), user.getTotalCollections()));
         mUserBioTextView.setText(user.getBio());
+    }
+
+    private void updateUI(List<Photo> userPhotos) {
+        if(mAdapter == null) {
+            mAdapter = new UsersPhotoAdapter(userPhotos);
+            mUserPhotosRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.setUserPhotoList(userPhotos);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }
