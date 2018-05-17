@@ -1,5 +1,8 @@
 package com.android.zore3x.photoviewer.adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 
 import com.android.zore3x.photoviewer.R;
 import com.android.zore3x.photoviewer.api.model.Photo;
+import com.android.zore3x.photoviewer.dialogs.FullPhotoPreviewDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -16,8 +20,10 @@ import java.util.List;
 public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.PhotoLineViewHolder> {
 
     private List<Photo> mPhotoList;
+    private Context mContext;
 
-    public PhotosLineAdapter(List<Photo> photoList) {
+    public PhotosLineAdapter(Context context, List<Photo> photoList) {
+        mContext = context;
         mPhotoList = photoList;
     }
 
@@ -44,7 +50,9 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
         return mPhotoList.size();
     }
 
-    class PhotoLineViewHolder extends RecyclerView.ViewHolder {
+    class PhotoLineViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private Photo mCurrentPhoto;
 
         private ImageView mUserPhotoSmallImageView;
         private ImageView mPhotoImageView;
@@ -59,26 +67,36 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
             mPhotoImageView = itemView.findViewById(R.id.card_photo_imageView);
             mUsernameTexView = itemView.findViewById(R.id.card_username_textView);
             mDescriptionTexView = itemView.findViewById(R.id.card_description_textView);
+
+            mPhotoImageView.setOnClickListener(this);
         }
 
         public void bind(Photo photo) {
 
+            mCurrentPhoto = photo;
+
             // загрузка изображния
             Picasso.get()
-                    .load(photo.getUrls().getRegular())
+                    .load(mCurrentPhoto.getUrls().getRegular())
                     .placeholder(R.drawable.placeholder_photo)
                     .into(mPhotoImageView);
 
             // загрузка аватара автора
             Picasso.get()
-                    .load(photo.getUser().getProfileImage().getSmall())
+                    .load(mCurrentPhoto.getUser().getProfileImage().getSmall())
                     .placeholder(R.drawable.user_placeholder)
                     .into(mUserPhotoSmallImageView);
             // описание
-            mDescriptionTexView.setText(photo.getDescription());
+            mDescriptionTexView.setText(mCurrentPhoto.getDescription());
 
             // имя пользователя
-            mUsernameTexView.setText(photo.getUser().getUsername());
+            mUsernameTexView.setText(mCurrentPhoto.getUser().getUsername());
+        }
+
+        @Override
+        public void onClick(View view) {
+            FullPhotoPreviewDialog.newInstance(mCurrentPhoto.getId())
+                    .show(((AppCompatActivity)mContext).getSupportFragmentManager(), "fullPhotoDialog");
         }
     }
 }

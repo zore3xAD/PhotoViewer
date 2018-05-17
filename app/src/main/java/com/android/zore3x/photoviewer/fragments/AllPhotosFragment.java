@@ -69,7 +69,7 @@ public class AllPhotosFragment extends Fragment {
             mPhotosLineAdapter.setPhotoList(photos);
             mPhotosLineAdapter.notifyDataSetChanged();
         } else {
-            mPhotosLineAdapter = new PhotosLineAdapter(photos);
+            mPhotosLineAdapter = new PhotosLineAdapter(getActivity(), photos);
             mPhotoLineRecyclerView.setAdapter(mPhotosLineAdapter);
         }
 
