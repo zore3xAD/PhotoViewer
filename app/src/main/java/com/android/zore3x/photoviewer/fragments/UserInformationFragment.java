@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.zore3x.photoviewer.R;
+
 public class UserInformationFragment extends Fragment {
 
     private static final String ARG_USER_ID = "user_id";
@@ -25,6 +27,8 @@ public class UserInformationFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_user_information, container, false);
+
+        return view;
     }
 }

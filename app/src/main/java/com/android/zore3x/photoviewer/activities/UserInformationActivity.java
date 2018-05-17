@@ -22,7 +22,7 @@ public class UserInformationActivity extends SingleFragmentActivity {
     }
 
     public static Intent newIntent(Context packageContext, String userId) {
-        Intent intent = new Intent(packageContext, AllPhotosActivity.class);
+        Intent intent = new Intent(packageContext, UserInformationActivity.class);
 
         intent.putExtra(EXTRA_USER_ID, userId);
 

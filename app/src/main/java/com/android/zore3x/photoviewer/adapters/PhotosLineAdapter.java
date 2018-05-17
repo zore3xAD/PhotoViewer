@@ -2,6 +2,8 @@ package com.android.zore3x.photoviewer.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.zore3x.photoviewer.R;
+import com.android.zore3x.photoviewer.activities.UserInformationActivity;
 import com.android.zore3x.photoviewer.api.model.Photo;
 import com.android.zore3x.photoviewer.dialogs.FullPhotoPreviewDialog;
 import com.squareup.picasso.Picasso;
@@ -60,6 +64,8 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
         private TextView mUsernameTexView;
         private TextView mDescriptionTexView;
 
+        private ConstraintLayout mUserBlockConstraintLayout;
+
         public PhotoLineViewHolder(View itemView) {
             super(itemView);
 
@@ -67,8 +73,10 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
             mPhotoImageView = itemView.findViewById(R.id.card_photo_imageView);
             mUsernameTexView = itemView.findViewById(R.id.card_username_textView);
             mDescriptionTexView = itemView.findViewById(R.id.card_description_textView);
+            mUserBlockConstraintLayout = itemView.findViewById(R.id.userBlock_constraintLayout);
 
             mPhotoImageView.setOnClickListener(this);
+            mUserBlockConstraintLayout.setOnClickListener(this);
         }
 
         public void bind(Photo photo) {
@@ -95,8 +103,18 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
 
         @Override
         public void onClick(View view) {
-            FullPhotoPreviewDialog.newInstance(mCurrentPhoto.getId())
-                    .show(((AppCompatActivity)mContext).getSupportFragmentManager(), "fullPhotoDialog");
+
+            switch (view.getId()) {
+                case R.id.card_photo_imageView:
+                    FullPhotoPreviewDialog.newInstance(mCurrentPhoto.getId())
+                            .show(((AppCompatActivity)mContext).getSupportFragmentManager(), "fullPhotoDialog");
+
+                    break;
+                case R.id.userBlock_constraintLayout:
+                    Intent intent = UserInformationActivity.newIntent(mContext, mCurrentPhoto.getId());
+                    mContext.startActivity(intent);
+                    break;
+            }
         }
     }
 }
