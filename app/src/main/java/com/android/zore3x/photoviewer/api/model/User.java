@@ -12,6 +12,12 @@ public class User {
     private String mUsername;
     @SerializedName("name")
     private String mName;
+    @SerializedName("first_name")
+    private String mFirstName;
+    @SerializedName("last_name")
+    private String mLastName;
+    @SerializedName("instagram_username")
+    private String mInstagramUsername;
     @SerializedName("portfolio_url")
     private String mPortfolioUrl;
     @SerializedName("bio")
@@ -20,6 +26,8 @@ public class User {
     private String mLocation;
     @SerializedName("total_likes")
     private int mTotalLikes;
+    @SerializedName("total_photos")
+    private int mTotalPhotos;
     @SerializedName("total_collections")
     private int mTotalCollections;
     @SerializedName("links")
@@ -30,15 +38,33 @@ public class User {
     public User() {
     }
 
-    public User(String id, String updatedAt, String username, String name, String portfolioUrl, String bio, String location, int totalLikes, int totalCollections, Links links, ProfileImage profileImage) {
+    public User(String id,
+                String updatedAt,
+                String username,
+                String name,
+                String firstName,
+                String lastName,
+                String instagramUsername,
+                String portfolioUrl,
+                String bio,
+                String location,
+                int totalLikes,
+                int totalPhotos,
+                int totalCollections,
+                Links links,
+                ProfileImage profileImage) {
         mId = id;
         mUpdatedAt = updatedAt;
         mUsername = username;
         mName = name;
+        mFirstName = firstName;
+        mLastName = lastName;
+        mInstagramUsername = instagramUsername;
         mPortfolioUrl = portfolioUrl;
         mBio = bio;
         mLocation = location;
         mTotalLikes = totalLikes;
+        mTotalPhotos = totalPhotos;
         mTotalCollections = totalCollections;
         mLinks = links;
         mProfileImage = profileImage;
@@ -130,5 +156,37 @@ public class User {
 
     public void setProfileImage(ProfileImage profileImage) {
         mProfileImage = profileImage;
+    }
+
+    public String getFirstName() {
+        return mFirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        mFirstName = firstName;
+    }
+
+    public String getLastName() {
+        return mLastName;
+    }
+
+    public void setLastName(String lastName) {
+        mLastName = lastName;
+    }
+
+    public String getInstagramUsername() {
+        return mInstagramUsername;
+    }
+
+    public void setInstagramUsername(String instagramUsername) {
+        mInstagramUsername = instagramUsername;
+    }
+
+    public int getTotalPhotos() {
+        return mTotalPhotos;
+    }
+
+    public void setTotalPhotos(int totalPhotos) {
+        mTotalPhotos = totalPhotos;
     }
 }

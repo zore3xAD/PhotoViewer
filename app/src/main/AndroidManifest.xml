@@ -22,6 +22,9 @@
         <activity android:name=".activities.AllPhotosActivity">
 
         </activity>
+        <activity android:name=".activities.UserInformationActivity">
+
+        </activity>
     </application>
 
 </manifest>
