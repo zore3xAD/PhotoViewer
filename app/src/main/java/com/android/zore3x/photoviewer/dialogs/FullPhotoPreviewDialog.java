@@ -13,13 +13,16 @@ import android.widget.ImageView;
 import com.android.zore3x.photoviewer.App;
 import com.android.zore3x.photoviewer.R;
 import com.android.zore3x.photoviewer.api.Unsplash;
+import com.android.zore3x.photoviewer.api.model.Download;
 import com.android.zore3x.photoviewer.api.model.Photo;
 import com.squareup.picasso.Picasso;
 
 public class FullPhotoPreviewDialog extends DialogFragment {
 
     public static final String ARG_PHOTO_ID = "photoId";
+
     private String mPhotoId;
+    private Download mDownloadLink;
 
     private Photo mPhoto;
 
@@ -77,6 +80,23 @@ public class FullPhotoPreviewDialog extends DialogFragment {
                 } else {
                     mDownloadButton.setVisibility(View.GONE);
                 }
+            }
+        });
+        mDownloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                App.getUnsplash().getPhotoDownloadLink(mPhotoId, new Unsplash.OnLinkDownloadListener() {
+                    @Override
+                    public void onComplete(Download downloadLink) {
+                        mDownloadLink = downloadLink;
+                        int d =3;
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        int d = 4;
+                    }
+                });
             }
         });
     }
