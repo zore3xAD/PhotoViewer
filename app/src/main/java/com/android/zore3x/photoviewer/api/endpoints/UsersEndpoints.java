@@ -1,6 +1,5 @@
 package com.android.zore3x.photoviewer.api.endpoints;
 
-import com.android.zore3x.photoviewer.api.Order;
 import com.android.zore3x.photoviewer.api.model.Photo;
 import com.android.zore3x.photoviewer.api.model.User;
 
@@ -20,6 +19,15 @@ public interface UsersEndpoints {
     Call<List<Photo>> getUserPhotos(@Path("username") String username,
                                     @Query("page") Integer page,
                                     @Query("per_page") Integer perPage,
-                                    @Query("order_by") String orderBy);
+                                    @Query("order_by") String orderBy
+                                    );
+
+    @GET("/users/{username}/likes")
+    Call<List<Photo>> getUserLikes(@Path("username") String username,
+                                   @Query("page") Integer page,
+                                   @Query("per_page") Integer perPage,
+                                   @Query("order_by") String orderBy
+                                   );
+
 
 }
