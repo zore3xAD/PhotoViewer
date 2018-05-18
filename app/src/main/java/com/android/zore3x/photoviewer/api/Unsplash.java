@@ -66,7 +66,26 @@ public class Unsplash {
         mUsersEndpoints = retrofit.create(UsersEndpoints.class);
     }
 
-    public void getUserPhotos(String username, Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener) {
+    public void getUserLikes(@NonNull String username,
+                             Integer page,
+                             Integer perPage,
+                             Order order,
+                             final OnPhotosLoadedListener listener) {
+        Call<List<Photo>> call;
+        if(order == null) {
+            call = mUsersEndpoints.getUserLikes(username, page, perPage, null);
+        } else {
+            call = mUsersEndpoints.getUserLikes(username, page, perPage, order.getOrder());
+        }
+        call.enqueue(getMultiplePhotoCallback(listener));
+    }
+
+    // получение всех опубликованных фото пользователя
+    public void getUserPhotos(@NonNull String username,
+                              Integer page,
+                              Integer perPage,
+                              Order order,
+                              final OnPhotosLoadedListener listener) {
         Call<List<Photo>> call;
         if(order == null) {
             call = mUsersEndpoints.getUserPhotos(username, page, perPage, null);
@@ -77,7 +96,10 @@ public class Unsplash {
     }
 
     // Функция вызываемая для получения всех фото
-    public void getPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
+    public void getPhotos(Integer page,
+                          Integer perPage,
+                          Order order,
+                          final OnPhotosLoadedListener listener){
         Call<List<Photo>> call;
         if(order == null) {
             call = mPhotosApiService.getPhotos(page, perPage, null);
@@ -88,21 +110,30 @@ public class Unsplash {
     }
 
     // функция для получения определенного фото
-    public void getPhoto(@NonNull String id, final OnPhotoLoadedListener listener) {
+    public void getPhoto(@NonNull String id,
+                         final OnPhotoLoadedListener listener) {
         getPhoto(id, null, null, listener);
     }
 
-    public void getPhotoDownloadLink(@NonNull String id, final OnLinkDownloadListener listener) {
+    // получение ссылки для загруззки изображения
+    public void getPhotoDownloadLink(@NonNull String id,
+                                     final OnLinkDownloadListener listener) {
         Call<Download> call = mPhotosApiService.getDownloadLink(id);
         call.enqueue(getPhotoDownloadLink(listener));
     }
 
-    public void getUser(@NonNull String username, final OnUserLoadedListener listener) {
+    // получение информации о пользователе
+    public void getUser(@NonNull String username,
+                        final OnUserLoadedListener listener) {
         Call<User> call = mUsersEndpoints.getUser(username);
         call.enqueue(getUser(listener));
     }
 
-    private void getPhoto(@NonNull String id, @Nullable Integer weight, @Nullable Integer height, final OnPhotoLoadedListener listener) {
+    // получение фотографии по ИД
+    private void getPhoto(@NonNull String id,
+                          @Nullable Integer weight,
+                          @Nullable Integer height,
+                          final OnPhotoLoadedListener listener) {
         Call<Photo> call = mPhotosApiService.getPhoto(id, weight, height);
         call.enqueue(getSinglePhotoCallback(listener));
     }
