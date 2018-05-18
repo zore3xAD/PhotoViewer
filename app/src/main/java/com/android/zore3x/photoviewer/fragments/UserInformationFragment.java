@@ -24,7 +24,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserInformationFragment extends Fragment {
+public class UserInformationFragment extends Fragment implements View.OnClickListener{
 
     private static final String ARG_USER_NAME = "user_name";
 
@@ -70,8 +70,10 @@ public class UserInformationFragment extends Fragment {
         mUserLikesTextView = view.findViewById(R.id.userLikesCount_textView);
         mUserCollectionsTextView = view.findViewById(R.id.userCollectionsCount_textView);
         mUserBioTextView = view.findViewById(R.id.userBio_textView);
-
         mUserPhotosRecyclerView = view.findViewById(R.id.userPhotos_recyclerView);
+
+        mUserLikesTextView.setOnClickListener(this);
+        mUserPhotosTextView.setOnClickListener(this);
 
         return view;
     }
@@ -127,6 +129,40 @@ public class UserInformationFragment extends Fragment {
         } else {
             mAdapter.setUserPhotoList(userPhotos);
             mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.userLikesCount_textView:
+                App.getUnsplash().getUserLikes(mUsername, 1, 10, Order.LATEST, new Unsplash.OnPhotosLoadedListener() {
+                    @Override
+                    public void onComplete(List<Photo> photos) {
+                        mUserPhotoList = photos;
+                        updateUI(photos);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+                break;
+            case R.id.userPhotosCount_textView:
+                App.getUnsplash().getUserPhotos(mUsername, 1, null, Order.LATEST, new Unsplash.OnPhotosLoadedListener() {
+                    @Override
+                    public void onComplete(List<Photo> photos) {
+                        mUserPhotoList = photos;
+                        updateUI(mUserPhotoList);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+                break;
         }
     }
 }
