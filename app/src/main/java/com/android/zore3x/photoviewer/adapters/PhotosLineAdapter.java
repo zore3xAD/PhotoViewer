@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,7 +65,10 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
         private TextView mUsernameTexView;
         private TextView mDescriptionTexView;
 
+        private ImageButton mShowMoreImageButton;
+
         private ConstraintLayout mUserBlockConstraintLayout;
+        private ConstraintLayout mExifBlockConstraintLayout;
 
         public PhotoLineViewHolder(View itemView) {
             super(itemView);
@@ -74,9 +78,12 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
             mUsernameTexView = itemView.findViewById(R.id.card_username_textView);
             mDescriptionTexView = itemView.findViewById(R.id.card_description_textView);
             mUserBlockConstraintLayout = itemView.findViewById(R.id.userBlock_constraintLayout);
+            mExifBlockConstraintLayout = itemView.findViewById(R.id.exifBlock_constraintLayout);
+            mShowMoreImageButton = itemView.findViewById(R.id.showMore_imageButton);
 
             mPhotoImageView.setOnClickListener(this);
             mUserBlockConstraintLayout.setOnClickListener(this);
+            mShowMoreImageButton.setOnClickListener(this);
         }
 
         public void bind(Photo photo) {
@@ -113,6 +120,18 @@ public class PhotosLineAdapter extends RecyclerView.Adapter<PhotosLineAdapter.Ph
                 case R.id.userBlock_constraintLayout:
                     Intent intent = UserInformationActivity.newIntent(mContext, mCurrentPhoto.getUser().getUsername());
                     mContext.startActivity(intent);
+                    break;
+                case R.id.showMore_imageButton:
+
+                    if(mPhotoImageView.getVisibility() == View.VISIBLE) {
+                        mPhotoImageView.setVisibility(View.GONE);
+                        mExifBlockConstraintLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        mPhotoImageView.setVisibility(View.VISIBLE);
+                        mExifBlockConstraintLayout.setVisibility(View.GONE);
+                    }
+
+
                     break;
             }
         }

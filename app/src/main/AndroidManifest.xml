@@ -19,10 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.AllPhotosActivity">
+        <activity android:name=".activities.AllPhotosActivity"
+            android:parentActivityName=".activities.MainActivity">
 
         </activity>
-        <activity android:name=".activities.UserInformationActivity">
+        <activity android:name=".activities.UserInformationActivity"
+            android:parentActivityName=".activities.AllPhotosActivity">
 
         </activity>
     </application>
